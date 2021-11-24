@@ -1,41 +1,106 @@
 import 'package:flutter/material.dart';
 
-class TodoListScreen extends StatelessWidget {
-final List<Map<String, dynamic>> users;
 
-  const TodoListScreen({
+class TodoListScreen extends StatefulWidget {
+//final List<Map<String, dynamic>> users;
+final List<String> testList;
+
+/*@override
+void initState(){
+    super.initState();
+    _focusNode.addListener(_focusNodeListener); 
+}
+
+@override
+void dispose(){
+    _focusNode.removeListener(_focusNodeListener);
+    super.dispose();
+}*/
+
+
+   const TodoListScreen({
     Key? key,
-    required this.users,
+    required this.testList,
     }) : super(key: key);
 
-  void _modal(BuildContext context, Map<String, dynamic> users) => showModalBottomSheet(
+
+  @override
+  State<TodoListScreen> createState() => _TodoListScreenState();
+  }
+
+
+class _TodoListScreenState extends State<TodoListScreen> {
+
+
+  final TextEditingController _contentController = TextEditingController();
+
+
+  @override
+  void dispose(){
+    super.dispose();
+  }
+
+
+  void _modal(BuildContext context) => showModalBottomSheet(
+    isScrollControlled: true,
     context: context,
-    builder: (context) => SizedBox(
-      height: 200,
-        child: Center(
-          child: Column(children: users.entries.map((e) => Text(e.value.toString())).toList(),
-        ),
-      ),
-    ),
+    builder: (context) {
+     return Padding( 
+       padding: EdgeInsets.only(
+          bottom: MediaQuery.of(context).viewInsets.bottom,
+          left: 10.0,
+          right: 10.0,
+          top: 10.0,
+       ),       
+       child: Wrap(
+         children: <Widget> [
+           const Text("TODO Editor"),
+           TextField(
+             controller: _contentController,
+             decoration: const InputDecoration(
+               labelText: "enter your TODO",
+             ),
+           ),
+           Padding(padding: const EdgeInsets.only(
+             bottom: 10.0,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                TextButton(onPressed: () {
+                  print(_contentController.text);
+                }, 
+                child: const Text("Create",))
+              ],
+            )
+           )
+         ]
+       )
+      );
+    },
+  
   );
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("List Page"),
+        title: const Text("TODOList Page"),
         centerTitle: true,
-        actions: [
-          IconButton(
-            onPressed: () => Navigator.pop(context),
-          icon: const Icon(
-            Icons.arrow_back,
-            ),
-          ),
-        ],
+        // actions: [
+        //   IconButton(
+        //     onPressed: () => Navigator.pop(context),
+        //   icon: const Icon(
+        //     Icons.arrow_back,
+        //     ),
+        //   ),
+        // ],
       ),
+
+
       body: ListView.builder(
-        itemCount: users.length,
+        itemCount: widget.testList.length,
         itemBuilder: (context, index) {
           return Dismissible(
             direction: DismissDirection.endToStart,
@@ -43,19 +108,22 @@ final List<Map<String, dynamic>> users;
             background: Container(
               color: Colors.red,
             ),
-            child: Card(
+            child: const Card(
               child: ListTile(
-                onTap: () => _modal(
-                  context,
-                  users[index],
-                ),
-                title: Text(users[index]["name"]),
-                subtitle: Text(users[index]["status"]),
+                // title: Text(widget.users[index]["name"]),
+                // subtitle: Text(widget.users[index]["status"]),
               ),
             ),
           );
         },
       ),
+
+
+      floatingActionButton: FloatingActionButton(
+                  onPressed: () => _modal(context),
+                  tooltip: 'Increment',
+                  child: const Icon(Icons.add),
+                ),
     );
   }
 }

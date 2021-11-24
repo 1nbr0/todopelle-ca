@@ -1,23 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:todopelle_ca/screens/home_screen.dart';
 
-  const List<Map<String, dynamic>> userList = [
-  {
-    "name": "Jhon",
-    "status": "J'aime manger du blé !",
-    "age": "24"
-  },
-  {
-    "name": "Jane",
-    "status": "J'aime !",
-    "age": "55"
-  },
-  {
-    "name": "Nelson",
-    "status": "Ment de là",
-    "age": "100"
-  },
-];
+  const List<String> testList = ["oui", "non"];
 
 void main() {
   runApp(const MyApp());
@@ -45,7 +29,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.purple,
       ),
       home: const HomeScreen(
-        users: userList,
+        testList: testList,
       ),
     );
   }
