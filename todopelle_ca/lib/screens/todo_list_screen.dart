@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todopelle_ca/main.dart';
 
 
 class TodoListScreen extends StatefulWidget {
@@ -102,6 +103,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
 
 
       body: ListView.builder(
+        padding: const EdgeInsets.all(8),
         itemCount: widget.testList.length,
         itemBuilder: (context, index) {
           return Dismissible(
@@ -110,23 +112,20 @@ class _TodoListScreenState extends State<TodoListScreen> {
             background: Container(
               color: Colors.red,
             ),
-            child: const Card(
+            child: Card(
               child: ListTile(
-                // title: Text(widget.users[index]["name"]),
-                // subtitle: Text(widget.users[index]["status"]),
+                title: Text(testList[index]),
               ),
             ),
           );
         },
       ),
 
-
       floatingActionButton: FloatingActionButton(
                   onPressed: () => _modal(context),
-                  tooltip: 'Increment',
-                  child: const Icon(Icons.add),
+                  backgroundColor: Colors.white,
+                  child: const Icon(Icons.add, color: Colors.blueAccent,),
                 ),
-
     );
   }
 }

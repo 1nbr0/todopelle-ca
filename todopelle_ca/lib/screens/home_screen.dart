@@ -1,7 +1,7 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:todopelle_ca/main.dart';
 import 'package:todopelle_ca/screens/day_list_todo_screen.dart';
-import 'package:todopelle_ca/screens/list_todo_screen.dart';
 import 'package:todopelle_ca/screens/todo_list_screen.dart';
 
 class HomeScreen extends StatefulWidget {
