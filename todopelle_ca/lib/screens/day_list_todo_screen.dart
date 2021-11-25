@@ -7,7 +7,7 @@ class DayListTodoScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Daily ToDo List"),
+        title: const Text("Daily TODO List"),
         centerTitle: true,
       ),
       backgroundColor: Colors.blueAccent,

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:todopelle_ca/main.dart';
 
 
 class TodoListScreen extends StatefulWidget {
-//final List<Map<String, dynamic>> users;
+
 final List<String> testList;
 
 /*@override
@@ -41,8 +42,21 @@ class _TodoListScreenState extends State<TodoListScreen> {
     super.dispose();
   }
 
+  void _addTodoItem(String title) {
+    // Wrapping it inside a set state will notify
+    // the app that the state has changed
+    setState(() {
+      testList.add(title);
+    });
+  }
 
-  void _modal(BuildContext context) => showModalBottomSheet(
+
+  Widget _buildTodoItem(String title) {
+    return ListTile(title: Text(title));
+  }
+
+
+  void _modal(BuildContext context, Function(String) onSend) => showModalBottomSheet(
     isScrollControlled: true,
     context: context,
     builder: (context) {
@@ -59,7 +73,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
            TextField(
              controller: _contentController,
              decoration: const InputDecoration(
-               labelText: "enter your TODO",
+               labelText: "Enter your TODO",
              ),
            ),
            Padding(padding: const EdgeInsets.only(
@@ -69,7 +83,9 @@ class _TodoListScreenState extends State<TodoListScreen> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 TextButton(onPressed: () {
-                  print(_contentController.text);
+                  onSend(_contentController.text);
+                  _contentController.clear();
+                  Navigator.of(context).pop();
                 }, 
                 child: const Text("Create",))
               ],
@@ -89,19 +105,12 @@ class _TodoListScreenState extends State<TodoListScreen> {
       appBar: AppBar(
         title: const Text("TODO List"),
         centerTitle: true,
-        // actions: [
-        //   IconButton(
-        //     onPressed: () => Navigator.pop(context),
-        //   icon: const Icon(
-        //     Icons.arrow_back,
-        //     ),
-        //   ),
-        // ],
       ),
       backgroundColor: Colors.blueAccent,
 
 
       body: ListView.builder(
+        padding: const EdgeInsets.all(8),
         itemCount: widget.testList.length,
         itemBuilder: (context, index) {
           return Dismissible(
@@ -110,23 +119,20 @@ class _TodoListScreenState extends State<TodoListScreen> {
             background: Container(
               color: Colors.red,
             ),
-            child: const Card(
+            child: Card(
               child: ListTile(
-                // title: Text(widget.users[index]["name"]),
-                // subtitle: Text(widget.users[index]["status"]),
+                title: Text(testList[index]),
               ),
             ),
           );
         },
       ),
 
-
       floatingActionButton: FloatingActionButton(
-                  onPressed: () => _modal(context),
-                  tooltip: 'Increment',
-                  child: const Icon(Icons.add),
-                ),
-
+                  onPressed: () => _modal(context, (value){_addTodoItem(value);}),
+                  backgroundColor: Colors.white,
+                  child: const Icon(Icons.add, color: Colors.blueAccent,),
+      ),
     );
   }
 }
