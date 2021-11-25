@@ -24,6 +24,7 @@ void dispose(){
     }) : super(key: key);
 
 
+
   @override
   State<TodoListScreen> createState() => _TodoListScreenState();
   }
@@ -86,7 +87,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("TODOList Page"),
+        title: const Text("TODO List"),
         centerTitle: true,
         // actions: [
         //   IconButton(
@@ -97,6 +98,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
         //   ),
         // ],
       ),
+      backgroundColor: Colors.blueAccent,
 
 
       body: ListView.builder(
@@ -124,6 +126,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
                   tooltip: 'Increment',
                   child: const Icon(Icons.add),
                 ),
+
     );
   }
 }
