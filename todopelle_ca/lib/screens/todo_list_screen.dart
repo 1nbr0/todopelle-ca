@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 
 
 class TodoListScreen extends StatefulWidget {
@@ -18,7 +19,7 @@ void dispose(){
 }*/
 
 
-   const TodoListScreen({
+  const TodoListScreen({
     Key? key,
     required this.testList,
     }) : super(key: key);
@@ -46,24 +47,24 @@ class _TodoListScreenState extends State<TodoListScreen> {
     isScrollControlled: true,
     context: context,
     builder: (context) {
-     return Padding( 
-       padding: EdgeInsets.only(
+    return Padding( 
+      padding: EdgeInsets.only(
           bottom: MediaQuery.of(context).viewInsets.bottom,
           left: 10.0,
           right: 10.0,
           top: 10.0,
-       ),       
-       child: Wrap(
-         children: <Widget> [
-           const Text("TODO Editor"),
-           TextField(
-             controller: _contentController,
-             decoration: const InputDecoration(
-               labelText: "enter your TODO",
-             ),
-           ),
-           Padding(padding: const EdgeInsets.only(
-             bottom: 10.0,
+      ),       
+      child: Wrap(
+        children: <Widget> [
+          const Text("TODO Editor"),
+          TextField(
+            controller: _contentController,
+            decoration: const InputDecoration(
+              labelText: "enter your TODO",
+            ),
+          ),
+          Padding(padding: const EdgeInsets.only(
+            bottom: 10.0,
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
@@ -74,9 +75,9 @@ class _TodoListScreenState extends State<TodoListScreen> {
                 child: const Text("Create",))
               ],
             )
-           )
-         ]
-       )
+          )
+        ]
+      )
       );
     },
   
@@ -89,14 +90,6 @@ class _TodoListScreenState extends State<TodoListScreen> {
       appBar: AppBar(
         title: const Text("TODO List"),
         centerTitle: true,
-        // actions: [
-        //   IconButton(
-        //     onPressed: () => Navigator.pop(context),
-        //   icon: const Icon(
-        //     Icons.arrow_back,
-        //     ),
-        //   ),
-        // ],
       ),
       backgroundColor: Colors.blueAccent,
 
@@ -104,11 +97,29 @@ class _TodoListScreenState extends State<TodoListScreen> {
       body: ListView.builder(
         itemCount: widget.testList.length,
         itemBuilder: (context, index) {
-          return Dismissible(
-            direction: DismissDirection.endToStart,
-            key: Key(index.toString()),
-            background: Container(
-              color: Colors.red,
+          return Slidable(
+            // Specify a key if the Slidable is dismissible.
+            key: const ValueKey(0),
+
+            // The start action pane is the one at the left or the top side.
+            endActionPane: ActionPane(
+              extentRatio: 0.20,
+              // A motion is a widget used to control how the pane animates.
+              motion: const ScrollMotion(),
+
+              // A pane can dismiss the Slidable.
+              dismissible: DismissiblePane(onDismissed: () {}),
+
+              // All actions are defined in the children parameter.
+              children: [
+                // A SlidableAction can have an icon and/or a label.
+                SlidableAction(
+                  onPressed: (context) {},
+                  backgroundColor: const Color(0xFFFE4A49),
+                  foregroundColor: Colors.white,
+                  icon: Icons.delete,
+                ),
+              ],
             ),
             child: const Card(
               child: ListTile(
@@ -117,14 +128,22 @@ class _TodoListScreenState extends State<TodoListScreen> {
               ),
             ),
           );
+  // Dismissible(
+  //           direction: DismissDirection.endToStart,
+  //           key: Key(index.toString()),
+  //           background: Container(
+  //             color: Colors.red,
+  //             child: const Icon(Icons.delete),
+  //           ),
+          
         },
       ),
 
 
       floatingActionButton: FloatingActionButton(
                   onPressed: () => _modal(context),
-                  tooltip: 'Increment',
-                  child: const Icon(Icons.add),
+                  backgroundColor: Colors.white,
+                  child: const Icon(Icons.add, color: Colors.blueAccent,),
                 ),
 
     );
