@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 
 class TodoListScreen extends StatelessWidget {
-final List<Map<String, dynamic>> users;
+  const TodoListScreen({Key? key}) : super(key: key);
 
-  const TodoListScreen({
-    Key? key,
-    required this.users,
-    }) : super(key: key);
+// final List<Map<String, dynamic>> users;
+
+//   const TodoListScreen({
+//     Key? key,
+//     required this.users,
+//     }) : super(key: key);
 
   void _modal(BuildContext context, Map<String, dynamic> users) => showModalBottomSheet(
     context: context,
@@ -23,39 +25,32 @@ final List<Map<String, dynamic>> users;
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("List Page"),
+        title: const Text("ToDo List"),
         centerTitle: true,
-        actions: [
-          IconButton(
-            onPressed: () => Navigator.pop(context),
-          icon: const Icon(
-            Icons.arrow_back,
-            ),
-          ),
-        ],
       ),
-      body: ListView.builder(
-        itemCount: users.length,
-        itemBuilder: (context, index) {
-          return Dismissible(
-            direction: DismissDirection.endToStart,
-            key: Key(index.toString()),
-            background: Container(
-              color: Colors.red,
-            ),
-            child: Card(
-              child: ListTile(
-                onTap: () => _modal(
-                  context,
-                  users[index],
-                ),
-                title: Text(users[index]["name"]),
-                subtitle: Text(users[index]["status"]),
-              ),
-            ),
-          );
-        },
-      ),
+      backgroundColor: Colors.blueAccent,
+      // body: ListView.builder(
+      //   itemCount: users.length,
+      //   itemBuilder: (context, index) {
+      //     return Dismissible(
+      //       direction: DismissDirection.endToStart,
+      //       key: Key(index.toString()),
+      //       background: Container(
+      //         color: Colors.red,
+      //       ),
+      //       child: Card(
+      //         child: ListTile(
+      //           onTap: () => _modal(
+      //             context,
+      //             users[index],
+      //           ),
+      //           title: Text(users[index]["name"]),
+      //           subtitle: Text(users[index]["status"]),
+      //         ),
+      //       ),
+      //     );
+      //   },
+      // ),
     );
   }
 }

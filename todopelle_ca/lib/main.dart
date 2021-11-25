@@ -1,24 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todopelle_ca/screens/home_screen.dart';
 
-  const List<Map<String, dynamic>> userList = [
-  {
-    "name": "Jhon",
-    "status": "J'aime manger du blé !",
-    "age": "24"
-  },
-  {
-    "name": "Jane",
-    "status": "J'aime !",
-    "age": "55"
-  },
-  {
-    "name": "Nelson",
-    "status": "Ment de là",
-    "age": "100"
-  },
-];
-
 void main() {
   runApp(const MyApp());
 }
@@ -42,10 +24,9 @@ class MyApp extends StatelessWidget {
         // or simply save your changes to "hot reload" in a Flutter IDE).
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
-        primarySwatch: Colors.purple,
+        primarySwatch: Colors.blue,
       ),
       home: const HomeScreen(
-        users: userList,
       ),
     );
   }
