@@ -43,8 +43,8 @@ class _HomeScreenState extends State<HomeScreen> {
         },
         scrollDirection: Axis.horizontal,
         controller: controller,
-        children: const <Widget>[
-          DayListTodoScreen(),
+        children: <Widget>[
+          const DayListTodoScreen(),
           TodoListScreen(testList: testList),
         ],
 

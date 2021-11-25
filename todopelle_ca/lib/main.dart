@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:todopelle_ca/screens/home_screen.dart';
 
 
-  const List<String> testList = ["oui", "non", "peut-etre"];
+  final List<String> testList = [];
 
 void main() {
   runApp(const MyApp());
@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const HomeScreen(
+      home: HomeScreen(
 
         testList: testList,
 
