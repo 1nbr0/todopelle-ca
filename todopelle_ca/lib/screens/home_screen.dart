@@ -5,7 +5,8 @@ import 'package:todopelle_ca/screens/list_todo_screen.dart';
 import 'package:todopelle_ca/screens/todo_list_screen.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({Key? key, required this.testList,}) : super(key: key);
+  final List<String> testList;
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -14,6 +15,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int _page = 0;
   final GlobalKey<CurvedNavigationBarState> _bottomNavigationKey = GlobalKey();
+
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
           });
         },
       ),
+      
       body: PageView(
         onPageChanged: (index) {
           final CurvedNavigationBarState? navBarState = _bottomNavigationKey.currentState;
@@ -42,8 +45,9 @@ class _HomeScreenState extends State<HomeScreen> {
         controller: controller,
         children: const <Widget>[
           DayListTodoScreen(),
-          TodoListScreen(),
+          TodoListScreen(testList: testList),
         ],
+
       )
     );
   }
