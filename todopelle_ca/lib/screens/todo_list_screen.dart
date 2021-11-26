@@ -4,6 +4,7 @@ import 'package:todopelle_ca/main.dart';
 
 
 class TodoListScreen extends StatefulWidget {
+
 final List<String> testList;
 
 /*@override
@@ -41,8 +42,21 @@ class _TodoListScreenState extends State<TodoListScreen> {
     super.dispose();
   }
 
+  void _addTodoItem(String title) {
+    // Wrapping it inside a set state will notify
+    // the app that the state has changed
+    setState(() {
+      testList.add(title);
+    });
+  }
 
-  void _modal(BuildContext context) => showModalBottomSheet(
+
+  Widget _buildTodoItem(String title) {
+    return ListTile(title: Text(title));
+  }
+
+
+  void _modal(BuildContext context, Function(String) onSend) => showModalBottomSheet(
     isScrollControlled: true,
     context: context,
     builder: (context) {
@@ -69,6 +83,9 @@ class _TodoListScreenState extends State<TodoListScreen> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 TextButton(onPressed: () {
+                  onSend(_contentController.text);
+                  _contentController.clear();
+                  Navigator.of(context).pop();
                 }, 
                 child: const Text("Create",))
               ],
@@ -93,6 +110,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
 
 
       body: ListView.builder(
+        padding: const EdgeInsets.all(8),
         itemCount: widget.testList.length,
         itemBuilder: (context, index) {
           return Slidable(
@@ -123,21 +141,20 @@ class _TodoListScreenState extends State<TodoListScreen> {
                 ),
               ],
             ),
-            child: const Card(
+            child: Card(
               child: ListTile(
+                title: Text(testList[index]),
               ),
             ),
           );
         },
       ),
 
-
       floatingActionButton: FloatingActionButton(
-                  onPressed: () => _modal(context),
+                  onPressed: () => _modal(context, (value){_addTodoItem(value);}),
                   backgroundColor: Colors.white,
                   child: const Icon(Icons.add, color: Colors.blueAccent,),
-                ),
-
+      ),
     );
   }
 }
