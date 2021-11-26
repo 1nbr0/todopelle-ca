@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:todopelle_ca/main.dart';
 
 
 class TodoListScreen extends StatefulWidget {
-//final List<Map<String, dynamic>> users;
 final List<String> testList;
 
 /*@override
@@ -36,7 +36,6 @@ class _TodoListScreenState extends State<TodoListScreen> {
 
   final TextEditingController _contentController = TextEditingController();
 
-
   @override
   void dispose(){
     super.dispose();
@@ -55,7 +54,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
           top: 10.0,
       ),       
       child: Wrap(
-        children: <Widget> [
+        children: [
           const Text("TODO Editor"),
           TextField(
             controller: _contentController,
@@ -70,7 +69,6 @@ class _TodoListScreenState extends State<TodoListScreen> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 TextButton(onPressed: () {
-                  print(_contentController.text);
                 }, 
                 child: const Text("Create",))
               ],
@@ -114,7 +112,11 @@ class _TodoListScreenState extends State<TodoListScreen> {
               children: [
                 // A SlidableAction can have an icon and/or a label.
                 SlidableAction(
-                  onPressed: (context) {},
+                  onPressed: (context) {
+                    setState(() {
+                      widget.testList.removeAt(index);
+                    });
+                  },
                   backgroundColor: const Color(0xFFFE4A49),
                   foregroundColor: Colors.white,
                   icon: Icons.delete,
@@ -123,19 +125,9 @@ class _TodoListScreenState extends State<TodoListScreen> {
             ),
             child: const Card(
               child: ListTile(
-                // title: Text(widget.users[index]["name"]),
-                // subtitle: Text(widget.users[index]["status"]),
               ),
             ),
           );
-  // Dismissible(
-  //           direction: DismissDirection.endToStart,
-  //           key: Key(index.toString()),
-  //           background: Container(
-  //             color: Colors.red,
-  //             child: const Icon(Icons.delete),
-  //           ),
-          
         },
       ),
 
