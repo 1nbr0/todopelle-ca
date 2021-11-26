@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todopelle_ca/main.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 
 
 class TodoListScreen extends StatefulWidget {
@@ -7,7 +8,7 @@ class TodoListScreen extends StatefulWidget {
 final List<String> testList;
 
 
-   const TodoListScreen({
+  const TodoListScreen({
     Key? key,
     required this.testList,
     }) : super(key: key);
@@ -20,11 +21,10 @@ final List<String> testList;
 
 
 class _TodoListScreenState extends State<TodoListScreen> {
-
-
   final TextEditingController _contentController = TextEditingController();
   final TextEditingController _modifyerController = TextEditingController();
 
+  bool isChecked = false;
 
   @override
   void dispose(){
@@ -43,34 +43,28 @@ class _TodoListScreenState extends State<TodoListScreen> {
     });
   }
 
-
-  // Widget _buildTodoItem(String title) {
-  //   return ListTile(title: Text(title));
-  // }
-
-
   void _modal(BuildContext context, Function(String) onSend) => showModalBottomSheet(
     isScrollControlled: true,
     context: context,
     builder: (context) {
-     return Padding( 
-       padding: EdgeInsets.only(
+      return Padding( 
+        padding: EdgeInsets.only(
           bottom: MediaQuery.of(context).viewInsets.bottom,
           left: 10.0,
           right: 10.0,
           top: 10.0,
-       ),       
-       child: Wrap(
-         children: <Widget> [
-           const Text("TODO Editor"),
-           TextField(
-             controller: _contentController,
-             decoration: const InputDecoration(
-               labelText: "Enter your TODO",
-             ),
-           ),
-           Padding(padding: const EdgeInsets.only(
-             bottom: 10.0,
+        ),       
+        child: Wrap(
+          children: <Widget> [
+            const Text("TODO Editor"),
+            TextField(
+              controller: _contentController,
+              decoration: const InputDecoration(
+                labelText: "Enter your TODO",
+              ),
+            ),
+            Padding(padding: const EdgeInsets.only(
+              bottom: 10.0,
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
@@ -83,9 +77,9 @@ class _TodoListScreenState extends State<TodoListScreen> {
                 child: const Text("Create",))
               ],
             )
-           )
-         ]
-       )
+            )
+          ]
+        )
       );
     },
   
@@ -95,24 +89,24 @@ class _TodoListScreenState extends State<TodoListScreen> {
     isScrollControlled: true,
     context: context,
     builder: (context) {
-     return Padding( 
-       padding: EdgeInsets.only(
+      return Padding( 
+        padding: EdgeInsets.only(
           bottom: MediaQuery.of(context).viewInsets.bottom,
           left: 10.0,
           right: 10.0,
           top: 10.0,
-       ),       
-       child: Wrap(
-         children: [
-           const Text("TODO Editor"),
-           TextField(
-             controller: controller,
-             decoration: const InputDecoration(
-               labelText: "Modify your TODO",
-             ),
-           ),
-           Padding(padding: const EdgeInsets.only(
-             bottom: 10.0,
+        ),       
+        child: Wrap(
+          children: [
+            const Text("TODO Editor"),
+            TextField(
+              controller: controller,
+              decoration: const InputDecoration(
+                labelText: "Modify your TODO",
+              ),
+            ),
+            Padding(padding: const EdgeInsets.only(
+              bottom: 10.0,
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
@@ -125,9 +119,9 @@ class _TodoListScreenState extends State<TodoListScreen> {
                 child: const Text("Modify",))
               ],
             )
-           )
-         ]
-       )
+            )
+          ]
+        )
       );
     },
   
@@ -135,6 +129,18 @@ class _TodoListScreenState extends State<TodoListScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Color getColor(Set<MaterialState> states) {
+      const Set<MaterialState> interactiveStates = <MaterialState>{
+        MaterialState.pressed,
+        MaterialState.hovered,
+        MaterialState.focused,
+      };
+      if (states.any(interactiveStates.contains)) {
+        return Colors.green;
+      }
+      return Colors.blue;
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("TODO List"),
@@ -142,24 +148,65 @@ class _TodoListScreenState extends State<TodoListScreen> {
       ),
       backgroundColor: Colors.blueAccent,
 
-
       body: ListView.builder(
         padding: const EdgeInsets.all(8),
         itemCount: widget.testList.length,
         itemBuilder: (context, index) {
-          return Dismissible(
-            direction: DismissDirection.endToStart,
-            key: Key(index.toString()),
-            background: Container(
-              color: Colors.red,
+          return Slidable(
+            // Specify a key if the Slidable is dismissible.
+            key: const ValueKey(0),
+
+            // The start action pane is the one at the left or the top side.
+            endActionPane: ActionPane(
+              extentRatio: 0.25,
+              // A motion is a widget used to control how the pane animates.
+              motion: const ScrollMotion(),
+
+              // All actions are defined in the children parameter.
+              children: [
+                // A SlidableAction can have an icon and/or a label.
+                SlidableAction(
+                  onPressed: (context) {
+                    setState(() {
+                      _modifyerController.text = testList[index];
+                      _modalModify(context,_modifyerController, (value){_modifyTodoItem(_modifyerController.text, index);});
+                    });
+                  },
+                  backgroundColor: Colors.yellow,
+                  foregroundColor: Colors.white,
+                  icon: Icons.edit,
+                ),
+                SlidableAction(
+                  onPressed: (context) {
+                    setState(() {
+                      widget.testList.removeAt(index);
+                    });
+                  },
+                  backgroundColor: const Color(0xFFFE4A49),
+                  foregroundColor: Colors.white,
+                  icon: Icons.delete,
+                ),
+              ],
             ),
             child: Card(
               child: ListTile(
-                title: Text(testList[index]),
-                onTap: () {
-                  _modifyerController.text = testList[index];
-                  _modalModify(context,_modifyerController, (value){_modifyTodoItem(_modifyerController.text, index);});
-                },
+                title: Row(
+                  children: [
+                    Checkbox(
+                      activeColor: Colors.green,
+                      checkColor: Colors.white,
+                      fillColor: MaterialStateProperty.resolveWith(getColor),
+                      value: isChecked,
+                      onChanged: (bool? value) {
+                        setState(() {
+                          isChecked = value!;
+                        });
+                      },
+                    ),
+                    Text(testList[index]),
+                  ]
+                )
+                  
               ),
             ),
           );
