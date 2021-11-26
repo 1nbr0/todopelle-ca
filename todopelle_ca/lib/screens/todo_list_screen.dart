@@ -6,18 +6,6 @@ class TodoListScreen extends StatefulWidget {
 
 final List<String> testList;
 
-/*@override
-void initState(){
-    super.initState();
-    _focusNode.addListener(_focusNodeListener); 
-}
-
-@override
-void dispose(){
-    _focusNode.removeListener(_focusNodeListener);
-    super.dispose();
-}*/
-
 
    const TodoListScreen({
     Key? key,
@@ -35,6 +23,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
 
 
   final TextEditingController _contentController = TextEditingController();
+  final TextEditingController _modifyerController = TextEditingController();
 
 
   @override
@@ -43,17 +32,21 @@ class _TodoListScreenState extends State<TodoListScreen> {
   }
 
   void _addTodoItem(String title) {
-    // Wrapping it inside a set state will notify
-    // the app that the state has changed
     setState(() {
       testList.add(title);
     });
   }
 
-
-  Widget _buildTodoItem(String title) {
-    return ListTile(title: Text(title));
+  void _modifyTodoItem(String title, int index) {
+    setState(() {
+      testList[index] = title;
+    });
   }
+
+
+  // Widget _buildTodoItem(String title) {
+  //   return ListTile(title: Text(title));
+  // }
 
 
   void _modal(BuildContext context, Function(String) onSend) => showModalBottomSheet(
@@ -98,6 +91,47 @@ class _TodoListScreenState extends State<TodoListScreen> {
   
   );
 
+  void _modalModify(BuildContext context,TextEditingController controller, Function(String) onSend) => showModalBottomSheet(
+    isScrollControlled: true,
+    context: context,
+    builder: (context) {
+     return Padding( 
+       padding: EdgeInsets.only(
+          bottom: MediaQuery.of(context).viewInsets.bottom,
+          left: 10.0,
+          right: 10.0,
+          top: 10.0,
+       ),       
+       child: Wrap(
+         children: [
+           const Text("TODO Editor"),
+           TextField(
+             controller: controller,
+             decoration: const InputDecoration(
+               labelText: "Modify your TODO",
+             ),
+           ),
+           Padding(padding: const EdgeInsets.only(
+             bottom: 10.0,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                TextButton(onPressed: () {
+                  onSend(controller.text);
+                  controller.clear();
+                  Navigator.of(context).pop();
+                }, 
+                child: const Text("Modify",))
+              ],
+            )
+           )
+         ]
+       )
+      );
+    },
+  
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -122,6 +156,10 @@ class _TodoListScreenState extends State<TodoListScreen> {
             child: Card(
               child: ListTile(
                 title: Text(testList[index]),
+                onTap: () {
+                  _modifyerController.text = testList[index];
+                  _modalModify(context,_modifyerController, (value){_modifyTodoItem(_modifyerController.text, index);});
+                },
               ),
             ),
           );
