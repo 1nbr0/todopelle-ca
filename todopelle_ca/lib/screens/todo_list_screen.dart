@@ -95,24 +95,24 @@ class _TodoListScreenState extends State<TodoListScreen> {
     isScrollControlled: true,
     context: context,
     builder: (context) {
-     return Padding( 
-       padding: EdgeInsets.only(
+      return Padding( 
+        padding: EdgeInsets.only(
           bottom: MediaQuery.of(context).viewInsets.bottom,
           left: 10.0,
           right: 10.0,
           top: 10.0,
-       ),       
-       child: Wrap(
-         children: [
-           const Text("TODO Editor"),
-           TextField(
-             controller: controller,
-             decoration: const InputDecoration(
-               labelText: "Modify your TODO",
-             ),
-           ),
-           Padding(padding: const EdgeInsets.only(
-             bottom: 10.0,
+        ),       
+        child: Wrap(
+          children: [
+            const Text("TODO Editor"),
+            TextField(
+              controller: controller,
+              decoration: const InputDecoration(
+                labelText: "Modify your TODO",
+              ),
+            ),
+            Padding(padding: const EdgeInsets.only(
+              bottom: 10.0,
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
@@ -125,9 +125,9 @@ class _TodoListScreenState extends State<TodoListScreen> {
                 child: const Text("Modify",))
               ],
             )
-           )
-         ]
-       )
+          )
+        ]
+      )
       );
     },
   
