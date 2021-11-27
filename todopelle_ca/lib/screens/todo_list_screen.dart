@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:todopelle_ca/main.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
 
 class TodoListScreen extends StatefulWidget {
 
-final List<String> testList;
+final List<String> todoList;
 
 
   const TodoListScreen({
     Key? key,
-    required this.testList,
+    required this.todoList,
     }) : super(key: key);
 
 
@@ -33,13 +34,13 @@ class _TodoListScreenState extends State<TodoListScreen> {
 
   void _addTodoItem(String title) {
     setState(() {
-      testList.add(title);
+      todoList.add(title);
     });
   }
 
   void _modifyTodoItem(String title, int index) {
     setState(() {
-      testList[index] = title;
+      todoList[index] = title;
     });
   }
 
@@ -63,6 +64,13 @@ class _TodoListScreenState extends State<TodoListScreen> {
                 labelText: "Enter your TODO",
               ),
             ),
+            const Text("Select a date"),
+            TextField(
+              controller: _contentController,
+              decoration: const InputDecoration(
+                labelText: "DD/MM/YY",
+              ),
+            ),
             Padding(padding: const EdgeInsets.only(
               bottom: 10.0,
             ),
@@ -73,7 +81,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
                   onSend(_contentController.text);
                   _contentController.clear();
                   Navigator.of(context).pop();
-                }, 
+                },
                 child: const Text("Create",))
               ],
             )
@@ -138,8 +146,17 @@ class _TodoListScreenState extends State<TodoListScreen> {
       if (states.any(interactiveStates.contains)) {
         return Colors.green;
       }
-      return Colors.blue;
+      return Colors.green;
     }
+
+  TextStyle? _getTextStyle(bool checked) {
+    if (!checked) return null;
+
+    return const TextStyle(
+      color: Colors.black54,
+      decoration: TextDecoration.lineThrough,
+    );
+  }
 
     return Scaffold(
       appBar: AppBar(
@@ -150,7 +167,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
 
       body: ListView.builder(
         padding: const EdgeInsets.all(8),
-        itemCount: widget.testList.length,
+        itemCount: widget.todoList.length,
         itemBuilder: (context, index) {
           return Slidable(
             // Specify a key if the Slidable is dismissible.
@@ -168,7 +185,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
                 SlidableAction(
                   onPressed: (context) {
                     setState(() {
-                      _modifyerController.text = testList[index];
+                      _modifyerController.text = todoList[index];
                       _modalModify(context,_modifyerController, (value){_modifyTodoItem(_modifyerController.text, index);});
                     });
                   },
@@ -179,7 +196,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
                 SlidableAction(
                   onPressed: (context) {
                     setState(() {
-                      widget.testList.removeAt(index);
+                      widget.todoList.removeAt(index);
                     });
                   },
                   backgroundColor: const Color(0xFFFE4A49),
@@ -200,10 +217,13 @@ class _TodoListScreenState extends State<TodoListScreen> {
                       onChanged: (bool? value) {
                         setState(() {
                           isChecked = value!;
+                          Text(todoList[index], style: _getTextStyle(isChecked),
+                          );
                         });
                       },
                     ),
-                    Text(testList[index]),
+                    Text(todoList[index], style: _getTextStyle(isChecked),
+                    ),
                   ]
                 )
                   
