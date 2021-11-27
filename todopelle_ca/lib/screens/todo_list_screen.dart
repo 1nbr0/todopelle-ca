@@ -187,7 +187,6 @@ class _TodoListScreenState extends State<TodoListScreen> {
                           Navigator.of(context).pop();
                         },
                         child: const Text('Modify'),
-                        // commentaire
                       ),
                     ],
                   ),
