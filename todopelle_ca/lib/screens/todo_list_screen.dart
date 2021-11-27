@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:todopelle_ca/main.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
 
 class TodoListScreen extends StatefulWidget {
 
-final List<String> testList;
+final List<String> todoList;
 
 
   const TodoListScreen({
     Key? key,
-    required this.testList,
+    required this.todoList,
     }) : super(key: key);
 
 
@@ -23,6 +24,8 @@ final List<String> testList;
 class _TodoListScreenState extends State<TodoListScreen> {
   final TextEditingController _contentController = TextEditingController();
   final TextEditingController _modifyerController = TextEditingController();
+  final TextEditingController _dateController = TextEditingController();
+
 
   bool isChecked = false;
 
@@ -33,13 +36,13 @@ class _TodoListScreenState extends State<TodoListScreen> {
 
   void _addTodoItem(String title) {
     setState(() {
-      testList.add(title);
+      todoList.add(title);
     });
   }
 
   void _modifyTodoItem(String title, int index) {
     setState(() {
-      testList[index] = title;
+      todoList[index] = title;
     });
   }
 
@@ -63,26 +66,61 @@ class _TodoListScreenState extends State<TodoListScreen> {
                 labelText: "Enter your TODO",
               ),
             ),
+            const Text("Select a date"),
+            TextField(
+              controller: _dateController,
+              decoration: const InputDecoration(
+                labelText: "DD/MM/YY",
+              ),
+            ),
             Padding(padding: const EdgeInsets.only(
               bottom: 10.0,
+              top: 10.0,
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                TextButton(onPressed: () {
-                  onSend(_contentController.text);
-                  _contentController.clear();
-                  Navigator.of(context).pop();
-                }, 
-                child: const Text("Create",))
+                const SizedBox(height: 30),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(4),
+                  child: Stack(
+                    children: <Widget>[
+                      Positioned.fill(
+                        child: Container(
+                          decoration: const BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: <Color>[
+                                Color(0xFF0D47A1),
+                                Color(0xFF1976D2),
+                                Color(0xFF42A5F5),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      TextButton(
+                        style: TextButton.styleFrom(
+                          padding: const EdgeInsets.all(16.0),
+                          primary: Colors.white,
+                          textStyle: const TextStyle(fontSize: 20),
+                        ),
+                        onPressed: () {
+                          onSend(_contentController.text);
+                          _contentController.clear();
+                          Navigator.of(context).pop();
+                        },
+                        child: const Text('Create'),
+                      ),
+                    ],
+                  ),
+                ),
               ],
-            )
-            )
-          ]
-        )
+            ),
+          ),
+        ],
+      ),
       );
     },
-  
   );
 
   void _modalModify(BuildContext context,TextEditingController controller, Function(String) onSend) => showModalBottomSheet(
@@ -105,18 +143,54 @@ class _TodoListScreenState extends State<TodoListScreen> {
                 labelText: "Modify your TODO",
               ),
             ),
+            const Text("Modify your date"),
+            TextField(
+              controller: _dateController,
+              decoration: const InputDecoration(
+                labelText: "DD/MM/YY",
+              ),
+            ),
             Padding(padding: const EdgeInsets.only(
               bottom: 10.0,
+              top: 10.0,
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                TextButton(onPressed: () {
-                  onSend(controller.text);
-                  controller.clear();
-                  Navigator.of(context).pop();
-                }, 
-                child: const Text("Modify",))
+                const SizedBox(height: 30),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(4),
+                  child: Stack(
+                    children: <Widget>[
+                      Positioned.fill(
+                        child: Container(
+                          decoration: const BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: <Color>[
+                                Color(0xFF0D47A1),
+                                Color(0xFF1976D2),
+                                Color(0xFF42A5F5),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      TextButton(
+                        style: TextButton.styleFrom(
+                          padding: const EdgeInsets.all(16.0),
+                          primary: Colors.white,
+                          textStyle: const TextStyle(fontSize: 20),
+                        ),
+                        onPressed: () {
+                          onSend(_contentController.text);
+                          _contentController.clear();
+                          Navigator.of(context).pop();
+                        },
+                        child: const Text('Modify'),
+                      ),
+                    ],
+                  ),
+                ),
               ],
             )
             )
@@ -138,8 +212,17 @@ class _TodoListScreenState extends State<TodoListScreen> {
       if (states.any(interactiveStates.contains)) {
         return Colors.green;
       }
-      return Colors.blue;
+      return Colors.green;
     }
+
+  TextStyle? _getTextStyle(bool checked) {
+    if (!checked) return null;
+
+    return const TextStyle(
+      color: Colors.black54,
+      decoration: TextDecoration.lineThrough,
+    );
+  }
 
     return Scaffold(
       appBar: AppBar(
@@ -150,7 +233,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
 
       body: ListView.builder(
         padding: const EdgeInsets.all(8),
-        itemCount: widget.testList.length,
+        itemCount: widget.todoList.length,
         itemBuilder: (context, index) {
           return Slidable(
             // Specify a key if the Slidable is dismissible.
@@ -168,18 +251,18 @@ class _TodoListScreenState extends State<TodoListScreen> {
                 SlidableAction(
                   onPressed: (context) {
                     setState(() {
-                      _modifyerController.text = testList[index];
+                      _modifyerController.text = todoList[index];
                       _modalModify(context,_modifyerController, (value){_modifyTodoItem(_modifyerController.text, index);});
                     });
                   },
-                  backgroundColor: Colors.yellow,
+                  backgroundColor: Colors.blueGrey,
                   foregroundColor: Colors.white,
                   icon: Icons.edit,
                 ),
                 SlidableAction(
                   onPressed: (context) {
                     setState(() {
-                      widget.testList.removeAt(index);
+                      widget.todoList.removeAt(index);
                     });
                   },
                   backgroundColor: const Color(0xFFFE4A49),
@@ -200,10 +283,13 @@ class _TodoListScreenState extends State<TodoListScreen> {
                       onChanged: (bool? value) {
                         setState(() {
                           isChecked = value!;
+                          Text(todoList[index], style: _getTextStyle(isChecked),
+                          );
                         });
                       },
                     ),
-                    Text(testList[index]),
+                    Text(todoList[index], style: _getTextStyle(isChecked),
+                    ),
                   ]
                 )
                   

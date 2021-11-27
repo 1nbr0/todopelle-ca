@@ -3,7 +3,7 @@ import 'package:todopelle_ca/screens/home_screen.dart';
 
 
 
-  final List<String> testList = [];
+  final List<String> todoList = [];
 
 void main() {
   runApp(const MyApp());
@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
       ),
       home: HomeScreen(
 
-        testList: testList,
+        todoList: todoList,
 
       ),
     );
