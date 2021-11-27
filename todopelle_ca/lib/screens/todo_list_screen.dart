@@ -24,6 +24,8 @@ final List<String> todoList;
 class _TodoListScreenState extends State<TodoListScreen> {
   final TextEditingController _contentController = TextEditingController();
   final TextEditingController _modifyerController = TextEditingController();
+  final TextEditingController _dateController = TextEditingController();
+
 
   bool isChecked = false;
 
@@ -66,31 +68,59 @@ class _TodoListScreenState extends State<TodoListScreen> {
             ),
             const Text("Select a date"),
             TextField(
-              controller: _contentController,
+              controller: _dateController,
               decoration: const InputDecoration(
                 labelText: "DD/MM/YY",
               ),
             ),
             Padding(padding: const EdgeInsets.only(
               bottom: 10.0,
+              top: 10.0,
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                TextButton(onPressed: () {
-                  onSend(_contentController.text);
-                  _contentController.clear();
-                  Navigator.of(context).pop();
-                },
-                child: const Text("Create",))
+                const SizedBox(height: 30),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(4),
+                  child: Stack(
+                    children: <Widget>[
+                      Positioned.fill(
+                        child: Container(
+                          decoration: const BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: <Color>[
+                                Color(0xFF0D47A1),
+                                Color(0xFF1976D2),
+                                Color(0xFF42A5F5),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      TextButton(
+                        style: TextButton.styleFrom(
+                          padding: const EdgeInsets.all(16.0),
+                          primary: Colors.white,
+                          textStyle: const TextStyle(fontSize: 20),
+                        ),
+                        onPressed: () {
+                          onSend(_contentController.text);
+                          _contentController.clear();
+                          Navigator.of(context).pop();
+                        },
+                        child: const Text('Create'),
+                      ),
+                    ],
+                  ),
+                ),
               ],
-            )
-            )
-          ]
-        )
+            ),
+          ),
+        ],
+      ),
       );
     },
-  
   );
 
   void _modalModify(BuildContext context,TextEditingController controller, Function(String) onSend) => showModalBottomSheet(
