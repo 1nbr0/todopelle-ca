@@ -5,8 +5,8 @@ import 'package:todopelle_ca/screens/day_list_todo_screen.dart';
 import 'package:todopelle_ca/screens/todo_list_screen.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key, required this.todoList,}) : super(key: key);
-  final List<String> todoList;
+  const HomeScreen({Key? key, required this.testList,}) : super(key: key);
+  final List<String> testList;
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -45,7 +45,7 @@ class _HomeScreenState extends State<HomeScreen> {
         controller: controller,
         children: <Widget>[
           const DayListTodoScreen(),
-          TodoListScreen(todoList: todoList),
+          TodoListScreen(testList: testList),
         ],
 
       )
