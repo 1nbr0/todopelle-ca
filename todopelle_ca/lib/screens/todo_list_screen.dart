@@ -143,18 +143,54 @@ class _TodoListScreenState extends State<TodoListScreen> {
                 labelText: "Modify your TODO",
               ),
             ),
+            const Text("Modify your date"),
+            TextField(
+              controller: _dateController,
+              decoration: const InputDecoration(
+                labelText: "DD/MM/YY",
+              ),
+            ),
             Padding(padding: const EdgeInsets.only(
               bottom: 10.0,
+              top: 10.0,
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                TextButton(onPressed: () {
-                  onSend(controller.text);
-                  controller.clear();
-                  Navigator.of(context).pop();
-                }, 
-                child: const Text("Modify",))
+                const SizedBox(height: 30),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(4),
+                  child: Stack(
+                    children: <Widget>[
+                      Positioned.fill(
+                        child: Container(
+                          decoration: const BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: <Color>[
+                                Color(0xFF0D47A1),
+                                Color(0xFF1976D2),
+                                Color(0xFF42A5F5),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      TextButton(
+                        style: TextButton.styleFrom(
+                          padding: const EdgeInsets.all(16.0),
+                          primary: Colors.white,
+                          textStyle: const TextStyle(fontSize: 20),
+                        ),
+                        onPressed: () {
+                          onSend(_contentController.text);
+                          _contentController.clear();
+                          Navigator.of(context).pop();
+                        },
+                        child: const Text('Modify'),
+                      ),
+                    ],
+                  ),
+                ),
               ],
             )
             )
@@ -219,7 +255,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
                       _modalModify(context,_modifyerController, (value){_modifyTodoItem(_modifyerController.text, index);});
                     });
                   },
-                  backgroundColor: Colors.yellow,
+                  backgroundColor: Colors.blueGrey,
                   foregroundColor: Colors.white,
                   icon: Icons.edit,
                 ),
