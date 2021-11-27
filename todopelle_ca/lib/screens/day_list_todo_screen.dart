@@ -11,8 +11,18 @@ class DayListTodoScreen extends StatelessWidget {
         centerTitle: true,
       ),
       backgroundColor: Colors.blueAccent,
-      body:
-        const Text("Vous n'avez pas de tâche assigné aujourd'hui"),
+      body: SizedBox(
+        width: double.infinity,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: const [
+            Text(
+              "Vous n'avez pas de tâches assignées aujourd'hui",
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+          ],
+        ),
+      )
     );
   }
 }
