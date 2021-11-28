@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:todopelle_ca/main.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
